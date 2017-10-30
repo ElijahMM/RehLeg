@@ -20,10 +20,11 @@ class FeaturedVideosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arc_view.bottom = 40f
-        featured_video_recyclerView.setHasFixedSize(false)
-        val params = featured_video_recyclerView.layoutParams as ConstraintLayout.LayoutParams
-        params.topMargin = 72
 
+        val params = featured_video_recyclerView.layoutParams as ConstraintLayout.LayoutParams
+        params.topMargin = 48
+
+        featured_video_recyclerView.setHasFixedSize(false)
         featured_video_recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         featured_video_recyclerView.adapter = FeaturedVideosAdapter(context)
 
