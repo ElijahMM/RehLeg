@@ -1,4 +1,4 @@
-package com.assist.lego.testing.ui.fragments
+package assist.com.rehleg.ui.fragments
 
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -8,16 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.R
+import assist.com.rehleg.ui.utils.inflate
 import com.assist.lego.testing.ui.adapters.FeaturedVideosAdapter
 import kotlinx.android.synthetic.main.fragment_featured_videos.*
 
 class FeaturedVideosFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_featured_videos, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = container!!.inflate(R.layout.fragment_featured_videos)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

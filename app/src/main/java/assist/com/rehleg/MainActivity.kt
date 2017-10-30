@@ -2,7 +2,7 @@ package assist.com.rehleg
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.assist.lego.testing.ui.fragments.FeaturedVideosFragment
+import assist.com.rehleg.ui.fragments.FeaturedVideosFragment
 
 class MainActivity : AppCompatActivity() {
 
