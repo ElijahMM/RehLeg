@@ -4,25 +4,29 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import assist.com.rehleg.R
+import assist.com.rehleg.ui.utils.inflate
+import kotlinx.android.synthetic.main.other_video_item.view.*
 
 /**
  * Created by mihai on 30.10.2017.
  */
-class OtherVideosAdapter(private val context: Context) : RecyclerView.Adapter<OtherVideosAdapter.OtherVieosViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): OtherVieosViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class OtherVideosAdapter(val context: Context, val isTablet: Boolean = false) : RecyclerView.Adapter<OtherVideosAdapter.OtherVideosViewHolder>() {
 
-    override fun onBindViewHolder(holder: OtherVieosViewHolder?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): OtherVideosViewHolder = OtherVideosViewHolder(parent?.inflate(R.layout.other_video_item)!!)
+
+    override fun onBindViewHolder(holder: OtherVideosViewHolder?, position: Int) {
+        holder?.bindView()
     }
 
     override fun getItemCount(): Int = 10
 
 
-    inner class OtherVieosViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class OtherVideosViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView() = with(itemView) {
-
+            if (!isTablet) {
+                element_shadow.setBackgroundColor(context.resources.getColor(R.color.otherVideosBkgColor))
+            }
         }
     }
 
