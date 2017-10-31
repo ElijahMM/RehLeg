@@ -5,8 +5,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.assist.lego.testing.MainActivity">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/container"
@@ -16,6 +15,7 @@
         app:layout_constraintVertical_bias=".5" />
 
     <FrameLayout
+        android:id="@+id/other_videos_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

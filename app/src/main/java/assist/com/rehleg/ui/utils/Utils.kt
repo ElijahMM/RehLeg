@@ -2,7 +2,12 @@ package assist.com.rehleg.ui.utils
 
 
 import android.content.Context
+import android.content.res.Configuration
 import android.util.TypedValue
+import android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE
+import android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK
+
+
 
 
 /**
@@ -18,6 +23,10 @@ class Utils {
         fun pxToDp(context: Context, px: Float): Float {
             val displayMetrics = context.resources.displayMetrics
             return px / displayMetrics.density
+        }
+
+        fun isTablet(context: Context): Boolean {
+            return context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
         }
     }
 }
