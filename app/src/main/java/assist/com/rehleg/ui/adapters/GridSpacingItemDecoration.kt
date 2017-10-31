@@ -16,19 +16,19 @@ class GridSpacingItemDecoration(private val spanCount: Int = 0, private val spac
             val column = position % spanCount // item column
 
             if (includeEdge) {
-                outRect!!.left = spacing - column * spacing / spanCount // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount // (column + 1) * ((1f / spanCount) * spacing)
+                outRect!!.left = spacing - column * spacing / spanCount
+                outRect.right = (column + 1) * spacing / spanCount
 
-                if (position < spanCount) { // top edge
+                if(column ==0){
+                    outRect.right = outRect.right + spacing/2
+                }else{
+                    outRect.left = outRect.left+ spacing/2
+                }
+
+                if (position < spanCount) {
                     outRect.top = spacing / 2
                 }
-                outRect.bottom = spacing / 4 // item bottom
-            } else {
-                outRect!!.left = column * spacing / spanCount // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing / 2 // item top
-                }
+                outRect.bottom = spacing / 4
             }
         } else {
             outRect!!.left = 0
