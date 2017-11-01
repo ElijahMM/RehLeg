@@ -1,12 +1,9 @@
 package assist.com.rehleg.ui.fragments
 
 import android.content.res.Configuration
-import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
-import com.transitionseverywhere.TransitionManager
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
