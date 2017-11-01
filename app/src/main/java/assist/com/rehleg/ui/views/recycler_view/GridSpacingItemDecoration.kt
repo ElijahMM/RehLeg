@@ -1,4 +1,4 @@
-package assist.com.rehleg.ui.adapters
+package assist.com.rehleg.ui.views.recycler_view
 
 import android.graphics.Rect
 import android.support.v7.widget.RecyclerView
@@ -19,11 +19,11 @@ class GridSpacingItemDecoration(private val spanCount: Int = 0, private val spac
                 outRect!!.left = spacing - column * spacing / spanCount
                 outRect.right = (column + 1) * spacing / spanCount
 
-                if(column ==0){
-                    outRect.right = outRect.right + spacing/2
-                }else{
-                    outRect.left = outRect.left+ spacing/2
-                }
+//                if(column ==0){
+//                    outRect.right = outRect.right + spacing/2
+//                }else{
+//                    outRect.left = outRect.left+ spacing/2
+//                }
 
                 if (position < spanCount) {
                     outRect.top = spacing / 2
