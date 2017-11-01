@@ -2,6 +2,7 @@ package assist.com.rehleg.ui.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import assist.com.rehleg.ui.holders.BaseViewHolder
 
 /**
  * Created by mihai on 30.10.2017.
@@ -16,6 +17,7 @@ class RecyclerViewBaseAdapter<T>(private var factory: BaseViewHolder.Factory<T>,
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<T> = factory.createViewHolder(parent!!, viewType)
 
+    override fun getItemId(position: Int): Long = position.toLong()
 
     fun setItems(items: MutableList<T>) {
         this.items = items

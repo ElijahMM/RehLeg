@@ -15,6 +15,6 @@ class MainActivity : AppCompatActivity() {
         transaction.add(R.id.container, FeaturedVideosFragment())
         transaction.add(R.id.other_videos_container, OtherVideosFragment())
         transaction.commit()
-        
+
     }
 }

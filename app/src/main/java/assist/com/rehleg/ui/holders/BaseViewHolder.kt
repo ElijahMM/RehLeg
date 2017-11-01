@@ -1,5 +1,6 @@
-package assist.com.rehleg.ui.adapters
+package assist.com.rehleg.ui.holders
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,8 @@ abstract class BaseViewHolder<in T>(viewItem: View) : RecyclerView.ViewHolder(vi
     }
 
     interface OnItemClickedListener<in T> {
-        fun onItemClicked(item:T, position: Int)
+        fun onItemClicked(item: T, position: Int)
     }
 
-    abstract fun onBindView(item :T)
+    abstract fun onBindView(item: T)
 }
