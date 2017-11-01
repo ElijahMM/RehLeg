@@ -1,6 +1,7 @@
 package assist.com.rehleg.ui.adapters
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ class OtherVideosAdapter(val context: Context, val isTablet: Boolean = false) : 
     inner class OtherVideosViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView() = with(itemView) {
             if (!isTablet) {
-                element_shadow.setBackgroundColor(context.resources.getColor(R.color.otherVideosBkgColor))
+                element_shadow.setBackgroundColor(ContextCompat.getColor(context, R.color.otherVideosBkgColor))
             }
         }
     }
