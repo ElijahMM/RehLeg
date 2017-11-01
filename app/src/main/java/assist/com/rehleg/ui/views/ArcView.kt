@@ -36,22 +36,22 @@ class ArcView : View {
 
     private fun init() {
         paint.color = ContextCompat.getColor(context, R.color.arcColor)
-        paint.strokeWidth = 5f
+        paint.strokeWidth = 4f
         paint.style = Paint.Style.STROKE
 
         shadowPaint.color = ContextCompat.getColor(context, R.color.shadowColor)
-        shadowPaint.strokeWidth = 8f
+        shadowPaint.strokeWidth = 6f
         shadowPaint.style = Paint.Style.STROKE
-        shadowPaint.alpha = 30
+        shadowPaint.alpha = 20
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        oval.set(-16f, 0f, width.toFloat() + 16, bottom)
+        oval.set(-8f, 0f, width.toFloat() + 8, bottom)
         canvas?.drawArc(oval, 0f, 180f, false, paint)
 
-        oval.set(-16f, 16f, width.toFloat() + 16, bottom + 16)
+        oval.set(-8f, 8f, width.toFloat() + 8, bottom + 8)
         canvas?.drawArc(oval, 0f, 180f, false, shadowPaint)
     }
 }

@@ -11,21 +11,32 @@ class FVLMSettings(builder: Builder) {
     var viewHeightDp: Float
     var viewWidthPx: Int
     var viewHeightPx: Int
+    var viewPivotX: Float
+    var viewPivotY: Float
+    var viewTranslationXStart: Int
+    var viewTranslationYStart: Int
 
     init {
         viewWidthDp = builder.mViewWidthDp
         viewHeightDp = builder.mViewHeightDp
         viewWidthPx = builder.mViewWidthPx
         viewHeightPx = builder.mViewHeightPx
+        viewPivotX = builder.mViewPivotX
+        viewPivotY = builder.mViewPivotY
+        viewTranslationXStart = builder.mViewTranslationXStart
+        viewTranslationYStart = builder.mViewTranslationYStart
     }
 
 
     class Builder(private val mContext: Context) {
-        var mViewWidthDp: Float = 0.toFloat()
-        var mViewHeightDp: Float = 0.toFloat()
+        var mViewWidthDp: Float = 0f
+        var mViewHeightDp: Float = 0f
         var mViewWidthPx: Int = 0
         var mViewHeightPx: Int = 0
-
+        var mViewPivotX: Float = 0f
+        var mViewPivotY: Float = 0f
+        var mViewTranslationXStart: Int = 0
+        var mViewTranslationYStart: Int = 0
         /**
          * Sets the `mViewWidthDp` and returns a reference to this Builder so that the methods can be chained together.
          *
@@ -64,6 +75,26 @@ class FVLMSettings(builder: Builder) {
             return this
         }
 
+        fun withViewPivotX(viewPivotX: Float): Builder {
+            mViewPivotX = viewPivotX
+            return this
+        }
+
+        fun withViewPivotY(viewPivotY: Float): Builder {
+            mViewPivotY = viewPivotY
+            return this
+        }
+
+        fun withViewTranslationXStart(translationX: Int): Builder {
+            mViewTranslationXStart = translationX
+            return this
+        }
+
+        fun withViewTranslationYStart(translationY: Int): Builder {
+            mViewTranslationYStart = translationY
+            return this
+        }
+
         /**
          * Returns a `FVLMSettings` built from the parameters previously set.
          *
@@ -73,17 +104,28 @@ class FVLMSettings(builder: Builder) {
             if (java.lang.Float.compare(mViewWidthDp, 0f) == 0) {
                 withViewWidthDp(DEFAULT_VIEW_WIDTH_DP)
             }
+
             if (java.lang.Float.compare(mViewHeightDp, 0f) == 0) {
                 withViewHeightDp(DEFAULT_VIEW_HEIGHT_DP)
             }
+
+            if (java.lang.Float.compare(mViewPivotX, 0f) == 0) {
+                mViewPivotX = PIVOT_NOT_SET
+            }
+
+            if (java.lang.Float.compare(mViewPivotY, 0f) == 0) {
+                mViewPivotY = PIVOT_NOT_SET
+            }
+
             return FVLMSettings(this)
         }
     }
 
     companion object {
 
-        public val DEFAULT_VIEW_WIDTH_DP = 120f
-        public val DEFAULT_VIEW_HEIGHT_DP = 160f
+        val DEFAULT_VIEW_WIDTH_DP = 120f
+        val DEFAULT_VIEW_HEIGHT_DP = 160f
+        val PIVOT_NOT_SET = -1f
 
         fun newBuilder(context: Context): Builder {
             return Builder(context)
