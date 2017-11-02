@@ -139,6 +139,10 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
         // find center view before detach or recycle all views
+        if (mSettings.viewHeightDp == FVLMSettings.DEFAULT_VIEW_HEIGHT_DP) {
+            mSettings.viewHeightPx = height
+        }
+
         mCenterView = findCurrentCenterView()
         if (itemCount == 0) {
             detachAndScrapAttachedViews(recycler)
@@ -155,10 +159,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
      */
     private fun fill(recycler: RecyclerView.Recycler?) {
         mViewCache.clear()
-
-        if (mSettings.viewHeightDp == FVLMSettings.DEFAULT_VIEW_HEIGHT_DP) {
-            mSettings.viewHeightPx = height
-        }
 
         for (i in 0 until childCount) {
             val view = getChildAt(i)
@@ -406,7 +406,7 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
         val leftBorder = 0
 
         // right limit.
-        val rightBorder = width + mSettings.viewWidthPx
+        val rightBorder = width + 2 * mSettings.viewWidthPx
         var leftViewOffset = centerViewOffset
         var leftViewPosition = centerViewPosition
 
