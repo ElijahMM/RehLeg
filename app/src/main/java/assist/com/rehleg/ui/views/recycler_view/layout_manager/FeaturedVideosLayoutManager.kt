@@ -331,8 +331,8 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
 
         // +++++ init params +++++
         val halfWidth = (width / 2).toFloat()
-        // minimal radius is recyclerView width * 2
-        val radius = (width * 10).toDouble()
+        val sagitta: Double = mSettings.viewTranslationYStart.toDouble() - 14
+        val radius = (sagitta * sagitta + halfWidth * halfWidth) / (2 * sagitta)
         val powRadius = radius * radius
         var rotation: Double
         var halfViewWidth: Float
@@ -345,16 +345,16 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
 
             halfViewWidth = view.width.toFloat() / 2
 
-            // change pivot point to center bottom of the view
-            view.pivotX = halfViewWidth
-            view.pivotY = 0f
+            // change pivot point
+            view.pivotX = if (mSettings.viewPivotX == FVLMSettings.PIVOT_NOT_SET) halfViewWidth else mSettings.viewPivotX
+            view.pivotY = if (mSettings.viewPivotY == FVLMSettings.PIVOT_NOT_SET) 0f else mSettings.viewPivotY
 
             // distance between center of screen to center of view in x-axis
             deltaX = (halfWidth - getDecoratedLeft(view).toFloat() - halfViewWidth).toDouble()
 
             // distance in which need to move view in y-axis. Low accuracy
             deltaY = radius - Math.sqrt(powRadius - deltaX * deltaX)
-            view.translationY = deltaY.toFloat()
+            view.translationY = mSettings.viewTranslationYStart - deltaY.toFloat()
             // calculate view rotation
             rotation = (Math.toDegrees(Math.asin((radius - deltaY) / radius)) - 90) * Math.signum(-deltaX)
 
@@ -373,13 +373,11 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
         val leftBorder = 0
 
         // right limit.
-        val rightBorder = width + mSettings.viewWidthPx + mSettings.viewWidthPx
+        val rightBorder = width + mSettings.viewWidthPx
         var leftViewOffset = centerViewOffset
         var leftViewPosition = centerViewPosition
 
-        // margin to draw cards in bottom
-        val baseTopMargin = Math.max(0, height - mSettings.viewHeightPx - mSettings.viewWidthPx / 4)
-        val overlapDistance: Int = -mSettings.viewWidthPx / 4
+        val overlapDistance: Int = -mSettings.viewWidthPx / 10
 
         var fillRight = true
 
@@ -436,8 +434,8 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
                 // measuring view
                 view.measure(widthSpec, heightSpec)
                 // set offsets, with and height in the recyclerView
-                layoutDecorated(view, leftViewOffset, baseTopMargin,
-                        leftViewOffset + mSettings.viewWidthPx, baseTopMargin + mSettings.viewHeightPx)
+                layoutDecorated(view, leftViewOffset, 0,
+                        leftViewOffset + mSettings.viewWidthPx, mSettings.viewHeightPx)
             } else {
                 attachView(view, leftViewPosition)
                 mViewCache.remove(leftViewPosition)

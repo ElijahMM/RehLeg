@@ -9,7 +9,8 @@ import assist.com.rehleg.ui.utils.inflate
 /**
  * Created by mihai on 31.10.2017.
  */
-class OtherVideosPhoneViewHolder private constructor(itemView: View, private val onItemClickedListener: OnItemClickedListener<String>) : BaseViewHolder<String>(itemView) {
+class
+OtherVideosPhoneViewHolder private constructor(itemView: View, private val onItemClickedListener: OnItemClickedListener<String>) : BaseViewHolder<String>(itemView) {
 
     class Factory : BaseViewHolder.Factory<String> {
         private lateinit var onItemClicked: OnItemClickedListener<String>

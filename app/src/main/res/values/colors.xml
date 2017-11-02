@@ -5,6 +5,6 @@
     <color name="colorAccent">#FC4182</color>
     <color name="arcColor">#959595</color>
     <color name="textColorPrimary">#2D2D2F</color>
-    <color name="shadowColor">#303030</color>
+    <color name="shadowColor">#151515</color>
     <color name="otherVideosBkgColor">#e1e1dd</color>
 </resources>
