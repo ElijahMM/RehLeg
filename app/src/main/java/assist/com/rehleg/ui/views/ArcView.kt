@@ -48,10 +48,10 @@ class ArcView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        oval.set(-8f, 0f, width.toFloat() + 8, bottom)
+        oval.set(-16f, 0f, width.toFloat() + 16, bottom)
         canvas?.drawArc(oval, 0f, 180f, false, paint)
 
-        oval.set(-8f, 8f, width.toFloat() + 8, bottom + 8)
+        oval.set(-16f, 8f, width.toFloat() + 16, bottom + 8)
         canvas?.drawArc(oval, 0f, 180f, false, shadowPaint)
     }
 }

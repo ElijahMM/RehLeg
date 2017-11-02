@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.R
+import assist.com.rehleg.ui.utils.Utils
 import assist.com.rehleg.ui.utils.inflate
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FVLMSettings
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FeaturedVideosLayoutManager
@@ -37,11 +38,13 @@ class FeaturedVideosFragment : Fragment() {
         val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val width = if (isLandscape) displayMetrics.widthPixels * 0.35f else displayMetrics.widthPixels * 0.6f
 
+        val translationYDp = if (Utils.isTablet(activity)) 25f else 19f
+
         val layoutManagerSettings = FVLMSettings
                 .newBuilder(activity)
                 .withViewWidthPx(width.toInt())
                 .withViewPivotY(40f)
-                .withViewTranslationYStart(if (displayMetrics.widthPixels > 1080) 26 else 46)
+                .withViewTranslationYStart(Utils.dpToPx(activity, translationYDp).toInt())
                 .build()
 
         featured_video_recyclerView.setHasFixedSize(false)

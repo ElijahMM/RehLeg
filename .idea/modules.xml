@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Lego.iml" filepath="$PROJECT_DIR$/Lego.iml" />
       <module fileurl="file://C:\Users\Sergiu\Documents\Android-Workspace\LegoApp\RehLeg\Lego.iml" filepath="C:\Users\Sergiu\Documents\Android-Workspace\LegoApp\RehLeg\Lego.iml" />
       <module fileurl="file://$PROJECT_DIR$/RehLeg.iml" filepath="$PROJECT_DIR$/RehLeg.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

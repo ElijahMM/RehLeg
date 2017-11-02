@@ -331,7 +331,7 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
 
         // +++++ init params +++++
         val halfWidth = (width / 2).toFloat()
-        val sagitta: Double = mSettings.viewTranslationYStart.toDouble() - 6
+        val sagitta: Double = mSettings.viewTranslationYStart.toDouble() - 14
         val radius = (sagitta * sagitta + halfWidth * halfWidth) / (2 * sagitta)
         val powRadius = radius * radius
         var rotation: Double
