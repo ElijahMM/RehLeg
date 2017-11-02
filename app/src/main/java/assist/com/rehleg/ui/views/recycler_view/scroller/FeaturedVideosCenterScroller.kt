@@ -4,14 +4,13 @@ import android.content.Context
 import android.support.v7.widget.LinearSmoothScroller
 import android.util.DisplayMetrics
 import android.view.View
-import assist.com.rehleg.ui.views.recycler_view.scroller.BaseSmoothScroller
 
 
 /**
  * Created by Sergiu on 31.10.2017.
  */
 internal class FeaturedVideosCenterScroller(context: Context) : BaseSmoothScroller(context) {
-    private val MILLISECONDS = 400f
+    private val MILLISECONDS = 300f
 
     override fun getHorizontalSnapPreference(): Int {
         return LinearSmoothScroller.SNAP_TO_START

@@ -1,9 +1,11 @@
 package assist.com.rehleg.ui.fragments
 
 import android.content.res.Configuration
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,6 @@ import assist.com.rehleg.R
 import assist.com.rehleg.network.handlers.ErrorHandler
 import assist.com.rehleg.network.handlers.ResponseHandler
 import assist.com.rehleg.network.models.TopPromotedItemsList
-import assist.com.rehleg.network.models.Video
 import assist.com.rehleg.network.models.VideoItem
 import assist.com.rehleg.ui.adapters.*
 import assist.com.rehleg.ui.holders.BaseViewHolder
@@ -35,12 +36,16 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
     private lateinit var mLayoutManager: GridLayoutManager
     private lateinit var adapter: RecyclerViewBaseAdapter<String>
 
+    private lateinit var onActionDone: ActionDone
+
+    private var firstVisibleInListview: Int = 0
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View = container!!.inflate(R.layout.fragment_other_videos)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ResponseHandler.setResponseListener(this)
         initComponents()
+
 
     }
 
@@ -57,6 +62,7 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
                 }), list)
 
         mLayoutManager = GridLayoutManager(activity, 2)
+        firstVisibleInListview = mLayoutManager.findFirstVisibleItemPosition();
 
         if (Utils.isTablet(activity)) {
             initTabletLayout()
@@ -68,6 +74,20 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
             }), list)
         }
+
+        otherVideosRecycler_View.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                val currentFirstVisible = mLayoutManager.findFirstVisibleItemPosition()
+
+                if (currentFirstVisible > firstVisibleInListview) {
+                    Log.i("RecyclerView scrolled: ", "scroll up!")
+                    onActionDone.onActionDone()
+                }else
+                    Log.i("RecyclerView scrolled: ", "scroll down!")
+            }
+        })
+
     }
 
     private fun initTabletLayout() {
@@ -102,6 +122,15 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
     override fun onErrorReceived(errorHandler: ErrorHandler) {
         Log.w(errorHandler.errorType, errorHandler.errorMessage)
+    }
+
+
+    fun setOnACtionDone(listener: ActionDone) {
+        onActionDone = listener
+    }
+
+    interface ActionDone {
+        fun onActionDone()
     }
 }
 

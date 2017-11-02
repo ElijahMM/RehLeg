@@ -3,6 +3,7 @@ package assist.com.rehleg.ui.views.recycler_view.layout_manager
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Rect
 import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.NonNull
@@ -197,6 +198,38 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
         }
         // update rotations.
         updateArcViewPositions()
+    }
+
+    /**
+     * Measure view with margins and specs
+     *
+     * @param child      view to measure
+     * @param widthSpec  spec for width
+     * @param heightSpec spec for height
+     */
+    private fun measureChildWithDecorationsAndMargin(child: View, widthSpec: Int, heightSpec: Int) {
+        var widthSpec1 = widthSpec
+        var heightSpec1 = heightSpec
+
+        val decorRect = Rect()
+        calculateItemDecorationsForChild(child, decorRect)
+        val lp = child.layoutParams as RecyclerView.LayoutParams
+        widthSpec1 = updateSpecWithExtra(widthSpec1, lp.leftMargin + decorRect.left,
+                lp.rightMargin + decorRect.right)
+        heightSpec1 = updateSpecWithExtra(heightSpec1, lp.topMargin + decorRect.top,
+                lp.bottomMargin + decorRect.bottom)
+        child.measure(widthSpec1, heightSpec1)
+    }
+
+    private fun updateSpecWithExtra(spec: Int, startInset: Int, endInset: Int): Int {
+        if (startInset == 0 && endInset == 0) {
+            return spec
+        }
+        val mode = View.MeasureSpec.getMode(spec)
+        return if (mode == View.MeasureSpec.AT_MOST || mode == View.MeasureSpec.EXACTLY) {
+            View.MeasureSpec.makeMeasureSpec(
+                    View.MeasureSpec.getSize(spec) - startInset - endInset, mode)
+        } else spec
     }
 
     override fun canScrollHorizontally(): Boolean {
@@ -432,7 +465,7 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
                 // add vew to the recyclerView
                 addView(view)
                 // measuring view
-                view.measure(widthSpec, heightSpec)
+                measureChildWithDecorationsAndMargin(view, widthSpec, heightSpec)
                 // set offsets, with and height in the recyclerView
                 layoutDecorated(view, leftViewOffset, 0,
                         leftViewOffset + mSettings.viewWidthPx, mSettings.viewHeightPx)

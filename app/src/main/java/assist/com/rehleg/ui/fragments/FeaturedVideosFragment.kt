@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DefaultItemAnimator
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import assist.com.rehleg.R
 import assist.com.rehleg.ui.utils.Utils
 import assist.com.rehleg.ui.utils.inflate
+import assist.com.rehleg.ui.views.recycler_view.ChildDrawingCallback
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FVLMSettings
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FeaturedVideosLayoutManager
 import com.assist.lego.testing.ui.adapters.FeaturedVideosAdapter
@@ -47,9 +49,10 @@ class FeaturedVideosFragment : Fragment() {
                 .withViewTranslationYStart(Utils.dpToPx(activity, translationYDp).toInt())
                 .build()
 
-        featured_video_recyclerView.setHasFixedSize(false)
-
-        featured_video_recyclerView.layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
+        val layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
+        featured_video_recyclerView.layoutManager = layoutManager
+        featured_video_recyclerView.itemAnimator = DefaultItemAnimator()
         featured_video_recyclerView.adapter = FeaturedVideosAdapter(activity)
+        featured_video_recyclerView.setChildDrawingOrderCallback(ChildDrawingCallback(layoutManager))
     }
 }
