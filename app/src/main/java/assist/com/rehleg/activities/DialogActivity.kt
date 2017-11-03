@@ -27,11 +27,15 @@ class DialogActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_preview)
-        this.setFinishOnTouchOutside(false)
+        this.setFinishOnTouchOutside(true)
 
-        val metrix = Utils.getDisplyMetrics(this)
-        val width = 3.5 * (metrix.widthPixels / 4)
-        val height = metrix.heightPixels / 2.5
+        initComponents(savedInstanceState)
+    }
+
+    private fun initComponents(savedInstanceState: Bundle?) {
+        val metrics = Utils.getDisplyMetrics(this)
+        val width = 3.5 * (metrics.widthPixels / 4)
+        val height = metrics.heightPixels / 2.5
 
         val lp = RelativeLayout.LayoutParams(width.toInt(), height.toInt())
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
@@ -61,6 +65,8 @@ class DialogActivity : Activity() {
                 Log.d("TAG", "onOutAnimationEnd!!")
             }
         })
+
+        dialog_root_view.setOnClickListener { run { exitTransition!!.exit(this) } }
     }
 
     override fun onBackPressed() {
