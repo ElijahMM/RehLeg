@@ -11,7 +11,7 @@ import android.view.View
  */
 class FeaturedVideosCenterScroller(context: Context) : BaseSmoothScroller(context) {
     companion object {
-        private val MILLISECONDS: Float = 200f
+        private val MILLISECONDS: Float = 100f
     }
 
     override fun getHorizontalSnapPreference(): Int {

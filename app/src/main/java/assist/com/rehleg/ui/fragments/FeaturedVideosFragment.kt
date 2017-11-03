@@ -17,7 +17,6 @@ import assist.com.rehleg.ui.utils.inflate
 import assist.com.rehleg.ui.views.recycler_view.ChildDrawingCallback
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FVLMSettings
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FeaturedVideosLayoutManager
-import com.assist.lego.testing.ui.adapters.FeaturedVideosAdapter
 import com.kogitune.activity_transition.ActivityTransitionLauncher
 import kotlinx.android.synthetic.main.featured_video_item.view.*
 import kotlinx.android.synthetic.main.fragment_featured_videos.*
