@@ -13,6 +13,7 @@
         app:backgroundView="@+id/imageView"
         app:scrollFactor="0.6">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

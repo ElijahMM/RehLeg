@@ -10,8 +10,10 @@ import android.view.View
 /**
  * Created by Sergiu on 31.10.2017.
  */
-internal class FeaturedVideosScroller(context: Context) : BaseSmoothScroller(context) {
-    private val MILLISECONDS = 200f
+class FeaturedVideosScroller(context: Context) : BaseSmoothScroller(context) {
+    companion object {
+        private val MILLISECONDS = 100f
+    }
 
     @Nullable
     var videoTimeCallback: VideoTimeCallback? = null
@@ -43,7 +45,7 @@ internal class FeaturedVideosScroller(context: Context) : BaseSmoothScroller(con
         return MILLISECONDS / displayMetrics.densityDpi
     }
 
-    internal interface VideoTimeCallback {
+    interface VideoTimeCallback {
         fun onTimeForScrollingCalculated(targetPosition: Int, time: Int)
     }
 }

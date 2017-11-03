@@ -1,19 +1,24 @@
 package assist.com.rehleg.ui.fragments
 
 import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DefaultItemAnimator
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.R
+import assist.com.rehleg.activities.DialogActivity
 import assist.com.rehleg.ui.utils.Utils
 import assist.com.rehleg.ui.utils.inflate
+import assist.com.rehleg.ui.views.recycler_view.ChildDrawingCallback
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FVLMSettings
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FeaturedVideosLayoutManager
 import com.assist.lego.testing.ui.adapters.FeaturedVideosAdapter
+import com.kogitune.activity_transition.ActivityTransitionLauncher
 import kotlinx.android.synthetic.main.fragment_featured_videos.*
 
 class FeaturedVideosFragment : Fragment() {
@@ -38,7 +43,7 @@ class FeaturedVideosFragment : Fragment() {
         val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val width = if (isLandscape) displayMetrics.widthPixels * 0.35f else displayMetrics.widthPixels * 0.6f
 
-        val translationYDp = if (Utils.isTablet(activity)) 25f else 19f
+        val translationYDp = if (Utils.isTablet(activity)) 24f else 19f
 
         val layoutManagerSettings = FVLMSettings
                 .newBuilder(activity)
@@ -47,9 +52,23 @@ class FeaturedVideosFragment : Fragment() {
                 .withViewTranslationYStart(Utils.dpToPx(activity, translationYDp).toInt())
                 .build()
 
-        featured_video_recyclerView.setHasFixedSize(false)
+        val layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
+        val adapter = FeaturedVideosAdapter(activity)
 
-        featured_video_recyclerView.layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
-        featured_video_recyclerView.adapter = FeaturedVideosAdapter(activity)
+        featured_video_recyclerView.layoutManager = layoutManager
+        featured_video_recyclerView.itemAnimator = DefaultItemAnimator()
+        featured_video_recyclerView.adapter = adapter
+        featured_video_recyclerView.setChildDrawingOrderCallback(ChildDrawingCallback(layoutManager))
+
+        adapter.setOnItemClickListener(object: FeaturedVideosAdapter.OnItemClickListener {
+            override fun onItemClicked(pos: Int, view: View) {
+                if (layoutManager.selectedItemPosition != pos) {
+                    layoutManager.switchItem(featured_video_recyclerView, pos)
+                }else{
+                    val intent = Intent(activity, DialogActivity::class.java)
+                    ActivityTransitionLauncher.with(activity).from(view).launch(intent)
+                }
+            }
+        })
     }
 }
