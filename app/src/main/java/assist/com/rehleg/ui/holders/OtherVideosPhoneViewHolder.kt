@@ -21,9 +21,10 @@ class OtherVideosPhoneViewHolder private constructor(itemView: View, private val
             val metrics = Utils.getDisplyMetrics(parent.context)
             val viewHeight = (metrics.heightPixels.toFloat() - Utils.getActionBarHeight(parent.context)) / 2 - Utils.dpToPx(parent.context, 48f)
 
-
             view.layoutParams = ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, viewHeight.toInt())
-            return OtherVideosPhoneViewHolder(view, onItemClicked)
+            val holder = OtherVideosPhoneViewHolder (view, onItemClicked)
+            view.setOnClickListener { run { onItemClicked.onItemClicked(view, holder.adapterPosition) } }
+            return holder
         }
 
         fun setOnItemClickedListener(onItemClickedListener: OnItemClickedListener<String>): OtherVideosPhoneViewHolder.Factory {
@@ -34,7 +35,6 @@ class OtherVideosPhoneViewHolder private constructor(itemView: View, private val
 
 
     override fun onBindView(item: String) {
-        onItemClickedListener.onItemClicked(item, adapterPosition)
     }
 
 

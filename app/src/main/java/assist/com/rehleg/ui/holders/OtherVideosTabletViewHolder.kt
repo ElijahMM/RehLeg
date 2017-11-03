@@ -26,7 +26,9 @@ class OtherVideosTabletViewHolder private constructor(itemView: View, private va
             val heightDP = ratio * 3
 
             view.layoutParams = ViewGroup.LayoutParams(widthDP.toInt(), heightDP.toInt())
-            return OtherVideosTabletViewHolder(view, onItemClicked)
+            val holder = OtherVideosTabletViewHolder(view, onItemClicked)
+            view.setOnClickListener { run { onItemClicked.onItemClicked(view, holder.adapterPosition) } }
+            return holder
 
         }
 
@@ -39,7 +41,6 @@ class OtherVideosTabletViewHolder private constructor(itemView: View, private va
 
 
     override fun onBindView(item: String) {
-        onItemClickedListener.onItemClicked(item, adapterPosition)
     }
 
 

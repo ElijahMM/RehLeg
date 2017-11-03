@@ -3,7 +3,6 @@ package assist.com.rehleg.ui.fragments
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +21,10 @@ import assist.com.rehleg.ui.utils.inflate
 import assist.com.rehleg.ui.views.recycler_view.GridSpacingItemDecoration
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.NoScrollGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_other_videos.*
+import com.kogitune.activity_transition.ActivityTransitionLauncher
+import android.content.Intent
+import assist.com.rehleg.activities.DialogActivity
+
 
 /**
  * Created by mihai on 30.10.2017.
@@ -92,7 +95,9 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
     private fun initAdapters(list: MutableList<String>) {
         tabletAdapter = RecyclerViewBaseAdapter(
                 OtherVideosTabletViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
-                    override fun onItemClicked(item: String, position: Int) {
+                    override fun onItemClicked(view: View, position: Int) {
+                        val intent = Intent(activity, DialogActivity::class.java)
+                        ActivityTransitionLauncher.with(activity).from(view).launch(intent)
                     }
 
                 }), list)
@@ -101,7 +106,7 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
         tabletLayoutManager.setScrollEnabled(false)
 
         phoneAdapter = RecyclerViewBaseAdapter(OtherVideosPhoneViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
-            override fun onItemClicked(item: String, position: Int) {
+            override fun onItemClicked(view: View, position: Int) {
             }
 
         }), list)

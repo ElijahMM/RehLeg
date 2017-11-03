@@ -1,4 +1,4 @@
-package assist.com.rehleg
+package assist.com.rehleg.activities
 
 import android.content.Context
 import android.content.res.Configuration
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.widget.LinearLayout
+import assist.com.rehleg.R
 import assist.com.rehleg.ui.fragments.FeaturedVideosFragment
 import assist.com.rehleg.ui.fragments.OtherVideosFragment
 import kotlinx.android.synthetic.main.activity_main.*

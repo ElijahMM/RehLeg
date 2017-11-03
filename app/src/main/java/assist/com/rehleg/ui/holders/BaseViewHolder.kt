@@ -15,7 +15,7 @@ abstract class BaseViewHolder<in T>(viewItem: View) : RecyclerView.ViewHolder(vi
     }
 
     interface OnItemClickedListener<in T> {
-        fun onItemClicked(item: T, position: Int)
+        fun onItemClicked(view:View, position: Int)
     }
 
     abstract fun onBindView(item: T)
