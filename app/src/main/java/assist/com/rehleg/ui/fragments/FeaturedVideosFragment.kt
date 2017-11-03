@@ -40,7 +40,7 @@ class FeaturedVideosFragment : Fragment() {
         val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val width = if (isLandscape) displayMetrics.widthPixels * 0.35f else displayMetrics.widthPixels * 0.6f
 
-        val translationYDp = if (Utils.isTablet(activity)) 25f else 19f
+        val translationYDp = if (Utils.isTablet(activity)) 24f else 19f
 
         val layoutManagerSettings = FVLMSettings
                 .newBuilder(activity)
@@ -50,9 +50,19 @@ class FeaturedVideosFragment : Fragment() {
                 .build()
 
         val layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
+        val adapter = FeaturedVideosAdapter(activity)
+
         featured_video_recyclerView.layoutManager = layoutManager
         featured_video_recyclerView.itemAnimator = DefaultItemAnimator()
-        featured_video_recyclerView.adapter = FeaturedVideosAdapter(activity)
+        featured_video_recyclerView.adapter = adapter
         featured_video_recyclerView.setChildDrawingOrderCallback(ChildDrawingCallback(layoutManager))
+
+        adapter.setOnItemClickListener(object: FeaturedVideosAdapter.OnItemClickListener {
+            override fun onItemClicked(pos: Int, view: View) {
+                if (layoutManager.selectedItemPosition != pos) {
+                    layoutManager.switchItem(featured_video_recyclerView, pos)
+                }
+            }
+        })
     }
 }

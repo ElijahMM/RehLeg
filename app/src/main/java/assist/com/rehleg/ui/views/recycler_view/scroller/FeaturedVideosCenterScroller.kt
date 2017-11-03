@@ -9,8 +9,10 @@ import android.view.View
 /**
  * Created by Sergiu on 31.10.2017.
  */
-internal class FeaturedVideosCenterScroller(context: Context) : BaseSmoothScroller(context) {
-    private val MILLISECONDS = 300f
+class FeaturedVideosCenterScroller(context: Context) : BaseSmoothScroller(context) {
+    companion object {
+        private val MILLISECONDS: Float = 200f
+    }
 
     override fun getHorizontalSnapPreference(): Int {
         return LinearSmoothScroller.SNAP_TO_START
