@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import assist.com.rehleg.R
+import assist.com.rehleg.ui.utils.Utils
 import assist.com.rehleg.ui.utils.inflate
 
 /**
@@ -19,15 +20,10 @@ class OtherVideosTabletViewHolder private constructor(itemView: View, private va
 
         override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<String> {
             val view = parent.inflate(R.layout.other_video_tablet_item)
-
-            val wm = parent.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val metrics = DisplayMetrics()
-            wm.defaultDisplay.getMetrics(metrics)
-
+            val metrics = Utils.getDisplyMetrics(parent.context)
             val widthDP = metrics.widthPixels.toFloat() / 3
             val ratio = widthDP / 4
             val heightDP = ratio * 3
-
 
             view.layoutParams = ViewGroup.LayoutParams(widthDP.toInt(), heightDP.toInt())
             return OtherVideosTabletViewHolder(view, onItemClicked)

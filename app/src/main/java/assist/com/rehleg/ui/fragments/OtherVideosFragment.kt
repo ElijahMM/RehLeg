@@ -1,11 +1,9 @@
 package assist.com.rehleg.ui.fragments
 
 import android.content.res.Configuration
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +20,7 @@ import assist.com.rehleg.ui.holders.OtherVideosTabletViewHolder
 import assist.com.rehleg.ui.utils.Utils
 import assist.com.rehleg.ui.utils.inflate
 import assist.com.rehleg.ui.views.recycler_view.GridSpacingItemDecoration
+import assist.com.rehleg.ui.views.recycler_view.layout_manager.NoScrollGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_other_videos.*
 
 /**
@@ -29,16 +28,17 @@ import kotlinx.android.synthetic.main.fragment_other_videos.*
  */
 class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
-    var list = mutableListOf<String>()
+
+
+    private lateinit var tabletLayoutManager: NoScrollGridLayoutManager
+    private lateinit var tabletAdapter: RecyclerViewBaseAdapter<String>
     private var landscapeItemDecoration = GridSpacingItemDecoration(2, 200, true)
+
+    private lateinit var phoneAdapter: RecyclerViewBaseAdapter<String>
+    private lateinit var phoneLayoutManager: NoScrollGridLayoutManager
     private var portraitItemDecoration = GridSpacingItemDecoration(2, 150, true)
 
-    private lateinit var mLayoutManager: GridLayoutManager
-    private lateinit var adapter: RecyclerViewBaseAdapter<String>
 
-    private lateinit var onActionDone: ActionDone
-
-    private var firstVisibleInListview: Int = 0
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View = container!!.inflate(R.layout.fragment_other_videos)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -46,60 +46,36 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
         ResponseHandler.setResponseListener(this)
         initComponents()
 
-
     }
 
+
     private fun initComponents() {
+        val list = mutableListOf<String>()
         (1..20).forEach {
             list.add("s")
         }
 
-        adapter = RecyclerViewBaseAdapter(
-                OtherVideosTabletViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
-                    override fun onItemClicked(item: String, position: Int) {
-                    }
-
-                }), list)
-
-        mLayoutManager = GridLayoutManager(activity, 2)
-        firstVisibleInListview = mLayoutManager.findFirstVisibleItemPosition();
+        initAdapters(list)
 
         if (Utils.isTablet(activity)) {
             initTabletLayout()
         } else {
-            otherVideosRecycler_View.layoutManager = GridLayoutManager(activity, 1)
-            otherVideosRecycler_View.adapter = RecyclerViewBaseAdapter(OtherVideosPhoneViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
-                override fun onItemClicked(item: String, position: Int) {
-                }
-
-            }), list)
+            otherVideosRecycler_View.adapter = phoneAdapter
+            otherVideosRecycler_View.layoutManager = phoneLayoutManager
         }
-
-        otherVideosRecycler_View.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                val currentFirstVisible = mLayoutManager.findFirstVisibleItemPosition()
-
-                if (currentFirstVisible > firstVisibleInListview) {
-                    Log.i("RecyclerView scrolled: ", "scroll up!")
-                    onActionDone.onActionDone()
-                }else
-                    Log.i("RecyclerView scrolled: ", "scroll down!")
-            }
-        })
 
     }
 
     private fun initTabletLayout() {
         otherVideosRecycler_View.setHasFixedSize(false)
         if (activity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            otherVideosRecycler_View.layoutManager = mLayoutManager
-            otherVideosRecycler_View.adapter = adapter
+            otherVideosRecycler_View.layoutManager = tabletLayoutManager
+            otherVideosRecycler_View.adapter = tabletAdapter
             otherVideosRecycler_View.removeItemDecoration(portraitItemDecoration)
             otherVideosRecycler_View.addItemDecoration(landscapeItemDecoration)
         } else {
-            otherVideosRecycler_View.layoutManager = mLayoutManager
-            otherVideosRecycler_View.adapter = adapter
+            otherVideosRecycler_View.layoutManager = tabletLayoutManager
+            otherVideosRecycler_View.adapter = tabletAdapter
             otherVideosRecycler_View.removeItemDecoration(landscapeItemDecoration)
             otherVideosRecycler_View.addItemDecoration(portraitItemDecoration)
         }
@@ -113,6 +89,27 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
     }
 
+    private fun initAdapters(list: MutableList<String>) {
+        tabletAdapter = RecyclerViewBaseAdapter(
+                OtherVideosTabletViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
+                    override fun onItemClicked(item: String, position: Int) {
+                    }
+
+                }), list)
+
+        tabletLayoutManager = NoScrollGridLayoutManager(activity, 2)
+        tabletLayoutManager.setScrollEnabled(false)
+
+        phoneAdapter = RecyclerViewBaseAdapter(OtherVideosPhoneViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
+            override fun onItemClicked(item: String, position: Int) {
+            }
+
+        }), list)
+
+        phoneLayoutManager = NoScrollGridLayoutManager(activity, 1)
+        phoneLayoutManager.setScrollEnabled(false)
+    }
+
     override fun onVideoListReceived(list: TopPromotedItemsList) {
     }
 
@@ -122,15 +119,6 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
     override fun onErrorReceived(errorHandler: ErrorHandler) {
         Log.w(errorHandler.errorType, errorHandler.errorMessage)
-    }
-
-
-    fun setOnACtionDone(listener: ActionDone) {
-        onActionDone = listener
-    }
-
-    interface ActionDone {
-        fun onActionDone()
     }
 }
 

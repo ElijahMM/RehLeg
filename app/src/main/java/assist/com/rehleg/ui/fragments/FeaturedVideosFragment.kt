@@ -38,7 +38,7 @@ class FeaturedVideosFragment : Fragment() {
                 .getMetrics(displayMetrics)
 
         val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val width = if (isLandscape) displayMetrics.widthPixels * 0.35f else displayMetrics.widthPixels * 0.6f
+        val width =  displayMetrics.widthPixels * if (isLandscape) 0.35f else 0.6f
 
         val translationYDp = if (Utils.isTablet(activity)) 24f else 19f
 

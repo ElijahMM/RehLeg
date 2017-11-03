@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
-import assist.com.rehleg.ui.views.recycler_view.animation.AnimationHelper
 import assist.com.rehleg.ui.views.recycler_view.scroller.FeaturedVideosCenterScroller
 import assist.com.rehleg.ui.views.recycler_view.scroller.FeaturedVideosScroller
 
@@ -30,17 +29,12 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
     /**
      * LinearSmoothScroller for switch views.
      */
-    private val mScroller: FeaturedVideosScroller
+    private val mScroller: FeaturedVideosScroller = FeaturedVideosScroller(context)
     /**
      * LinearSmoothScroller to show view in the middle of the screen.
      */
-    private val mCenterScroller: FeaturedVideosCenterScroller
+    private val mCenterScroller: FeaturedVideosCenterScroller = FeaturedVideosCenterScroller(context)
 
-    /**
-     * Helper module need to implement 'open','close', 'shift' views functionality.
-     */
-    @NonNull
-    private var mAnimationHelper: AnimationHelper? = null
     /**
      * Position of selected item in adapter. ADAPTER!!
      */
@@ -53,27 +47,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
      * Position of item we need to scroll to right now.
      */
     private var mScrollToPosition = RecyclerView.NO_POSITION
-    /**
-     * Need to block some events between smooth scroll and select item animation.
-     * true before start smoothScroll to selected item
-     * false after smooth scroll finished and after select animation is started.
-     */
-    private var mIsWaitingToSelectAnimation = false
-    /**
-     * Need to block some events while scaling view.
-     * true right after smooth scroll finished scrolling.
-     */
-    private var mIsSelectAnimationInProcess = false
-
-    /**
-     * Need to block some events while deselecting item is preparing.
-     */
-    private var mIsWaitingToDeselectAnimation = false
-    /**
-     * Need to block some events.
-     */
-    private var mIsDeselectAnimationInProcess = false
-
     /**
      * Saved state for layout manager.
      */
@@ -88,27 +61,13 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
      */
     private var mCenterView: View? = null
 
-    val isItemSelected: Boolean
-        get() = selectedItemPosition != RecyclerView.NO_POSITION
-
     init {
-        // create default settings
-        // create default animation helper
-        mAnimationHelper = AnimationHelper()
         // create default FanCardScroller
-        mScroller = FeaturedVideosScroller(context)
-        // set callback which return calculated scroll time
-        mScroller.videoTimeCallback = object : FeaturedVideosScroller.VideoTimeCallback {
-            override fun onTimeForScrollingCalculated(targetPosition: Int, time: Int) {
-                selectItem(targetPosition, time)
-            }
-        }
 
         // create default smooth scroller to show item in the middle of the screen
-        mCenterScroller = FeaturedVideosCenterScroller(context)
     }
 
-    fun saveState() {
+    private fun saveState() {
         mPendingSavedState = SavedState(findCurrentCenterViewPos(), mIsSelected)
     }
 
@@ -245,10 +204,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
             return delta
         }
 
-        // if animation in progress block scroll
-        if (mIsDeselectAnimationInProcess || mIsSelectAnimationInProcess) {
-            return 0
-        }
         val delta = scrollHorizontallyInternal(dx)
         offsetChildrenHorizontal(-delta)
         fill(recycler)
@@ -259,8 +214,8 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
         var heightMeasureSpec = heightSpec
 
         val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
-        val scaledHeight = (mSettings.viewHeightPx * mAnimationHelper!!.viewScaleFactor).toLong()
-        val scaledWidth = (mSettings.viewWidthPx * mAnimationHelper!!.viewScaleFactor).toLong()
+        val scaledHeight = mSettings.viewHeightPx
+        val scaledWidth = mSettings.viewWidthPx
         val height = if (heightMode == View.MeasureSpec.EXACTLY)
             View.MeasureSpec.getSize(heightMeasureSpec)
         else
@@ -437,7 +392,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
             leftViewOffset += (-deltaOffset)
         }
 
-        var selectedView: View? = null
         while (fillRight && leftViewPosition < itemCount) {
 
             // offset for current view if we restore state and have selected item
@@ -465,14 +419,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
                 mViewCache.remove(leftViewPosition)
             }
 
-            view.scaleX = 1f
-            view.scaleY = 1f
-
-            if (mIsSelected && centerViewPosition == leftViewPosition) {
-                selectedView = view
-            }
-
-
             // calculate position for next view. last position + view height - overlap between views.
             leftViewOffset = leftViewOffset + mSettings.viewWidthPx - overlapDistance
 
@@ -486,16 +432,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
 
             leftViewPosition++
         }
-
-        // if we have to restore state with selected item
-        // this part need to scale center selected view
-        if (hasPendingStateSelectedItem) {
-            //            View view = findCurrentCenterView();
-            if (selectedView != null) {
-                selectedView.scaleX = mAnimationHelper!!.viewScaleFactor
-                selectedView.scaleY = mAnimationHelper!!.viewScaleFactor
-            }
-        }
     }
 
     /**
@@ -505,24 +441,10 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
      * @param selectedViewPosition item view position
      */
     fun switchItem(@Nullable recyclerView: RecyclerView?, selectedViewPosition: Int) {
-        if (mIsDeselectAnimationInProcess || mIsSelectAnimationInProcess ||
-                mIsWaitingToDeselectAnimation || mIsWaitingToSelectAnimation) {
-            // block event if any animation in progress
-            return
-        }
-
         if (recyclerView != null) {
             // if item not selected need to smooth scroll and then select item
             smoothScrollToPosition(recyclerView, null, selectedViewPosition)
         }
-    }
-
-
-    private fun selectItem(position: Int, delay: Int) {
-        // save position of view which will be selected
-        selectedItemPosition = position
-        // save selected stay... no way back...
-        mIsSelected = true
     }
 
     override fun onScrollStateChanged(state: Int) {

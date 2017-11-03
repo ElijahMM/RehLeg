@@ -8,12 +8,12 @@
 
     <View
         android:id="@+id/shadow"
-        android:layout_marginTop="-60dp"
+        android:layout_marginTop="-64dp"
         android:layout_width="match_parent"
         android:layout_height="79dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="@dimen/small_margin"
-        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/very_small_margin"
+        android:layout_marginStart="@dimen/very_small_margin"
         android:background="@drawable/featured_video_shadow" />
 
     <View
