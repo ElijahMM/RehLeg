@@ -1,17 +1,16 @@
 package assist.com.rehleg.ui.fragments
 
 import android.app.Activity
-import android.content.Intent
+import android.app.Fragment
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.Fragment
+
 import android.support.v7.widget.DefaultItemAnimator
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.R
-import assist.com.rehleg.activities.DialogActivity
 import assist.com.rehleg.ui.adapters.RecyclerViewBaseAdapter
 import assist.com.rehleg.ui.holders.BaseViewHolder
 import assist.com.rehleg.ui.holders.FeaturedVideoViewHolder
@@ -20,15 +19,13 @@ import assist.com.rehleg.ui.utils.inflate
 import assist.com.rehleg.ui.views.recycler_view.ChildDrawingCallback
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FVLMSettings
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FeaturedVideosLayoutManager
-import com.kogitune.activity_transition.ActivityTransitionLauncher
-import kotlinx.android.synthetic.main.featured_video_item.view.*
 import kotlinx.android.synthetic.main.fragment_featured_videos.*
 
 class FeaturedVideosFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = container!!.inflate(R.layout.fragment_featured_videos)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponents()
     }
@@ -39,7 +36,7 @@ class FeaturedVideosFragment : Fragment() {
 
         //Recycler View initialisation
         val displayMetrics = DisplayMetrics()
-        (context as Activity).windowManager
+        (activity as Activity).windowManager
                 .defaultDisplay
                 .getMetrics(displayMetrics)
 
@@ -66,10 +63,6 @@ class FeaturedVideosFragment : Fragment() {
                     override fun onItemClicked(view: View, position: Int) {
                         if (layoutManager.selectedItemPosition != position) {
                             layoutManager.switchItem(featured_video_recyclerView, position)
-
-                            
-                            val intent = Intent(activity, DialogActivity::class.java)
-                            ActivityTransitionLauncher.with(activity).from(view.preview_videoView).launch(intent)
                         }
                     }
                 }), list)

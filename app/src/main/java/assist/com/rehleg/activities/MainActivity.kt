@@ -26,9 +26,11 @@ class MainActivity : AppCompatActivity() {
         val height = (metrics.heightPixels * weight).toInt()
         featured_videos_container.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
 
-        val transaction = supportFragmentManager.beginTransaction()
+        val transaction = fragmentManager.beginTransaction()
         transaction.add(R.id.featured_videos_container, FeaturedVideosFragment())
         transaction.add(R.id.other_videos_container, OtherVideosFragment())
         transaction.commit()
+
+
     }
 }
