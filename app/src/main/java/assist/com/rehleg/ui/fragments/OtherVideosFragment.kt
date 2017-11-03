@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +28,15 @@ import kotlinx.android.synthetic.main.fragment_other_videos.*
  */
 class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
-    var list = mutableListOf<String>()
-    private var landscapeItemDecoration = GridSpacingItemDecoration(2, 200, true)
-    private var portraitItemDecoration = GridSpacingItemDecoration(2, 150, true)
 
-    private lateinit var mLayoutManager: NoScrollGridLayoutManager
-    private lateinit var adapter: RecyclerViewBaseAdapter<String>
+
+    private lateinit var tabletLayoutManager: NoScrollGridLayoutManager
+    private lateinit var tabletAdapter: RecyclerViewBaseAdapter<String>
+    private var landscapeItemDecoration = GridSpacingItemDecoration(2, 200, true)
+
+    private lateinit var phoneAdapter: RecyclerViewBaseAdapter<String>
+    private lateinit var phoneLayoutManager: NoScrollGridLayoutManager
+    private var portraitItemDecoration = GridSpacingItemDecoration(2, 150, true)
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View = container!!.inflate(R.layout.fragment_other_videos)
@@ -46,30 +48,20 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
     }
 
+
     private fun initComponents() {
+        val list = mutableListOf<String>()
         (1..20).forEach {
             list.add("s")
         }
 
-        adapter = RecyclerViewBaseAdapter(
-                OtherVideosTabletViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
-                    override fun onItemClicked(item: String, position: Int) {
-                    }
-
-                }), list)
-
-        mLayoutManager = NoScrollGridLayoutManager(activity, 2)
-        mLayoutManager.setScrollEnabled(false)
+        initAdapters(list)
 
         if (Utils.isTablet(activity)) {
             initTabletLayout()
         } else {
-            otherVideosRecycler_View.layoutManager = GridLayoutManager(activity, 1)
-            otherVideosRecycler_View.adapter = RecyclerViewBaseAdapter(OtherVideosPhoneViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
-                override fun onItemClicked(item: String, position: Int) {
-                }
-
-            }), list)
+            otherVideosRecycler_View.adapter = phoneAdapter
+            otherVideosRecycler_View.layoutManager = phoneLayoutManager
         }
 
     }
@@ -77,13 +69,13 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
     private fun initTabletLayout() {
         otherVideosRecycler_View.setHasFixedSize(false)
         if (activity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            otherVideosRecycler_View.layoutManager = mLayoutManager
-            otherVideosRecycler_View.adapter = adapter
+            otherVideosRecycler_View.layoutManager = tabletLayoutManager
+            otherVideosRecycler_View.adapter = tabletAdapter
             otherVideosRecycler_View.removeItemDecoration(portraitItemDecoration)
             otherVideosRecycler_View.addItemDecoration(landscapeItemDecoration)
         } else {
-            otherVideosRecycler_View.layoutManager = mLayoutManager
-            otherVideosRecycler_View.adapter = adapter
+            otherVideosRecycler_View.layoutManager = tabletLayoutManager
+            otherVideosRecycler_View.adapter = tabletAdapter
             otherVideosRecycler_View.removeItemDecoration(landscapeItemDecoration)
             otherVideosRecycler_View.addItemDecoration(portraitItemDecoration)
         }
@@ -97,6 +89,27 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
     }
 
+    private fun initAdapters(list: MutableList<String>) {
+        tabletAdapter = RecyclerViewBaseAdapter(
+                OtherVideosTabletViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
+                    override fun onItemClicked(item: String, position: Int) {
+                    }
+
+                }), list)
+
+        tabletLayoutManager = NoScrollGridLayoutManager(activity, 2)
+        tabletLayoutManager.setScrollEnabled(false)
+
+        phoneAdapter = RecyclerViewBaseAdapter(OtherVideosPhoneViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
+            override fun onItemClicked(item: String, position: Int) {
+            }
+
+        }), list)
+
+        phoneLayoutManager = NoScrollGridLayoutManager(activity, 1)
+        phoneLayoutManager.setScrollEnabled(false)
+    }
+
     override fun onVideoListReceived(list: TopPromotedItemsList) {
     }
 
@@ -106,13 +119,6 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
     override fun onErrorReceived(errorHandler: ErrorHandler) {
         Log.w(errorHandler.errorType, errorHandler.errorMessage)
-    }
-
-
-
-    interface ActionDone {
-        fun onActionUp(dif: Int)
-        fun onActionDown(dif: Int)
     }
 }
 

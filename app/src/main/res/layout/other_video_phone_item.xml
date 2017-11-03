@@ -41,7 +41,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guideline10" />
 
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        <ImageView
             android:id="@+id/other_videos_phone_player"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -49,7 +49,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:background="@android:color/background_dark"
+            android:background="@android:color/holo_red_dark"
             app:layout_constraintBottom_toTopOf="@+id/guideline85"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
