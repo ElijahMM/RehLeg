@@ -12,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.R
 import assist.com.rehleg.activities.DialogActivity
+import assist.com.rehleg.ui.adapters.RecyclerViewBaseAdapter
+import assist.com.rehleg.ui.holders.BaseViewHolder
+import assist.com.rehleg.ui.holders.FeaturedVideoViewHolder
 import assist.com.rehleg.ui.utils.Utils
 import assist.com.rehleg.ui.utils.inflate
 import assist.com.rehleg.ui.views.recycler_view.ChildDrawingCallback
@@ -41,7 +44,7 @@ class FeaturedVideosFragment : Fragment() {
                 .getMetrics(displayMetrics)
 
         val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val width =  displayMetrics.widthPixels * if (isLandscape) 0.35f else 0.6f
+        val width = displayMetrics.widthPixels * if (isLandscape) 0.35f else 0.6f
 
         val translationYDp = if (Utils.isTablet(activity)) 24f else 19f
 
@@ -52,23 +55,28 @@ class FeaturedVideosFragment : Fragment() {
                 .withViewTranslationYStart(Utils.dpToPx(activity, translationYDp).toInt())
                 .build()
 
+        val list = mutableListOf<String>()
+        (1..20).forEach {
+            list.add("s")
+        }
+
         val layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
-        val adapter = FeaturedVideosAdapter(activity)
+        val adapter = RecyclerViewBaseAdapter(FeaturedVideoViewHolder.Factory().setOnItemClickListener(
+                object : BaseViewHolder.OnItemClickedListener {
+                    override fun onItemClicked(view: View, position: Int) {
+                        if (layoutManager.selectedItemPosition != position) {
+                            layoutManager.switchItem(featured_video_recyclerView, position)
+
+                            
+                            val intent = Intent(activity, DialogActivity::class.java)
+                            ActivityTransitionLauncher.with(activity).from(view.preview_videoView).launch(intent)
+                        }
+                    }
+                }), list)
 
         featured_video_recyclerView.layoutManager = layoutManager
         featured_video_recyclerView.itemAnimator = DefaultItemAnimator()
         featured_video_recyclerView.adapter = adapter
         featured_video_recyclerView.setChildDrawingOrderCallback(ChildDrawingCallback(layoutManager))
-
-        adapter.setOnItemClickListener(object: FeaturedVideosAdapter.OnItemClickListener {
-            override fun onItemClicked(pos: Int, view: View) {
-                if (layoutManager.selectedItemPosition != pos) {
-                    layoutManager.switchItem(featured_video_recyclerView, pos)
-                }else{
-                    val intent = Intent(activity, DialogActivity::class.java)
-                    ActivityTransitionLauncher.with(activity).from(view.preview_videoView).launch(intent)
-                }
-            }
-        })
     }
 }

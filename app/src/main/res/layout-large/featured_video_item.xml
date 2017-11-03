@@ -36,6 +36,14 @@
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin" />
 
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_play" />
+
     <ImageView
         android:id="@+id/first_clipper_imageView"
         android:layout_width="48dp"

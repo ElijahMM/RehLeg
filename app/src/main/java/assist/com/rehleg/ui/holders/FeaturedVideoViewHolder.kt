@@ -19,8 +19,9 @@ class FeaturedVideoViewHolder(view: View) : BaseViewHolder<String>(view) {
             return holder
         }
 
-        fun setOnItemClickListener(itemClickListener: OnItemClickedListener) {
+        fun setOnItemClickListener(itemClickListener: OnItemClickedListener): Factory {
             this.itemClickListener = itemClickListener
+            return this
         }
     }
 

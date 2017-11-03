@@ -24,7 +24,6 @@
         android:layout_below="@+id/first_clipper_imageView"
         android:background="@drawable/outer_shadow" />
 
-
     <ImageView
         android:id="@+id/preview_videoView"
         android:layout_width="match_parent"
@@ -33,6 +32,14 @@
         android:background="@android:color/holo_red_dark"
         android:layout_alignTop="@+id/background_view"
         android:layout_margin="@dimen/small_margin" />
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_play" />
 
     <ImageView
         android:id="@+id/first_clipper_imageView"
