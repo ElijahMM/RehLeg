@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.fragment_other_videos.*
 import com.kogitune.activity_transition.ActivityTransitionLauncher
 import android.content.Intent
 import assist.com.rehleg.activities.DialogActivity
+import kotlinx.android.synthetic.main.other_video_phone_item.view.*
+import kotlinx.android.synthetic.main.other_video_tablet_item.view.*
 
 
 /**
@@ -96,8 +98,7 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
         tabletAdapter = RecyclerViewBaseAdapter(
                 OtherVideosTabletViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
                     override fun onItemClicked(view: View, position: Int) {
-                        val intent = Intent(activity, DialogActivity::class.java)
-                        ActivityTransitionLauncher.with(activity).from(view).launch(intent)
+                        openPreviewDialog(view.other_tablet_videos_player)
                     }
 
                 }), list)
@@ -107,12 +108,18 @@ class OtherVideosFragment : Fragment(), ResponseHandler.ResponseListener {
 
         phoneAdapter = RecyclerViewBaseAdapter(OtherVideosPhoneViewHolder.Factory().setOnItemClickedListener(object : BaseViewHolder.OnItemClickedListener<String> {
             override fun onItemClicked(view: View, position: Int) {
+                openPreviewDialog(view.other_videos_phone_player)
             }
 
         }), list)
 
         phoneLayoutManager = NoScrollGridLayoutManager(activity, 1)
         phoneLayoutManager.setScrollEnabled(false)
+    }
+
+    private fun openPreviewDialog(view: View) {
+        val intent = Intent(activity, DialogActivity::class.java)
+        ActivityTransitionLauncher.with(activity).from(view).launch(intent)
     }
 
     override fun onVideoListReceived(list: TopPromotedItemsList) {
