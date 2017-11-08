@@ -7,9 +7,11 @@ import android.view.ViewGroup
 /**
  * Created by mihai on 31.10.2017.
  */
-abstract class BaseViewHolder<in T>(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
+abstract class BaseViewHolder<T>(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
 
-    interface Factory<in T> {
+    var factory: Factory<T>? = null
+
+    interface Factory<T> {
         fun createViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T>
     }
 

@@ -11,7 +11,6 @@ import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.ui.views.recycler_view.scroller.FeaturedVideosCenterScroller
-import assist.com.rehleg.ui.views.recycler_view.scroller.FeaturedVideosScroller
 
 
 /**
@@ -26,10 +25,6 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
      * Map with view cache.
      */
     private val mViewCache = SparseArray<View>()
-    /**
-     * LinearSmoothScroller for switch views.
-     */
-    private val mScroller: FeaturedVideosScroller = FeaturedVideosScroller(context)
     /**
      * LinearSmoothScroller to show view in the middle of the screen.
      */
@@ -479,8 +474,8 @@ class FeaturedVideosLayoutManager(@NonNull context: Context, settings: FVLMSetti
             return
         }
         // smooth scroll to position
-        mScroller.targetPosition = position
-        startSmoothScroll(mScroller)
+        mCenterScroller.targetPosition = position
+        startSmoothScroll(mCenterScroller)
     }
 
     /**

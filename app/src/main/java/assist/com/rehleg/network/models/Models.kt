@@ -4,7 +4,7 @@ package assist.com.rehleg.network.models
  * Created by mihai on 01.11.2017.
  */
 data class TopPromotedItemsList(
-        var TopPromotedItems: List<TopPromotedItem> = emptyList(),
+        var TopPromotedItems: MutableList<TopPromotedItem> = mutableListOf(),
         var ConfigurationType: String = "",
         var PromotionConfigurationId: String = "",
         var PromotedAppCatalogId: String = "",

@@ -4,13 +4,16 @@ import android.app.Activity
 import android.app.Fragment
 import android.content.res.Configuration
 import android.os.Bundle
-
 import android.support.v7.widget.DefaultItemAnimator
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import assist.com.rehleg.R
+import assist.com.rehleg.network.handlers.ErrorHandler
+import assist.com.rehleg.network.handlers.ResponseHandler
+import assist.com.rehleg.network.models.TopPromotedItemsList
+import assist.com.rehleg.network.models.VideoItem
 import assist.com.rehleg.ui.adapters.RecyclerViewBaseAdapter
 import assist.com.rehleg.ui.holders.BaseViewHolder
 import assist.com.rehleg.ui.holders.FeaturedVideoViewHolder
@@ -21,7 +24,9 @@ import assist.com.rehleg.ui.views.recycler_view.layout_manager.FVLMSettings
 import assist.com.rehleg.ui.views.recycler_view.layout_manager.FeaturedVideosLayoutManager
 import kotlinx.android.synthetic.main.fragment_featured_videos.*
 
-class FeaturedVideosFragment : Fragment() {
+class FeaturedVideosFragment : Fragment(), ResponseHandler.ResponseListener {
+
+    var videoList: TopPromotedItemsList? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = container!!.inflate(R.layout.fragment_featured_videos)
 
@@ -52,11 +57,6 @@ class FeaturedVideosFragment : Fragment() {
                 .withViewTranslationYStart(Utils.dpToPx(activity, translationYDp).toInt())
                 .build()
 
-        val list = mutableListOf<String>()
-        (1..20).forEach {
-            list.add("s")
-        }
-
         val layoutManager = FeaturedVideosLayoutManager(activity, layoutManagerSettings)
         val adapter = RecyclerViewBaseAdapter(FeaturedVideoViewHolder.Factory().setOnItemClickListener(
                 object : BaseViewHolder.OnItemClickedListener {
@@ -65,11 +65,21 @@ class FeaturedVideosFragment : Fragment() {
                             layoutManager.switchItem(featured_video_recyclerView, position)
                         }
                     }
-                }), list)
+                }), videoList!!.TopPromotedItems)
 
-        featured_video_recyclerView.layoutManager = layoutManager
-        featured_video_recyclerView.itemAnimator = DefaultItemAnimator()
-        featured_video_recyclerView.adapter = adapter
-        featured_video_recyclerView.setChildDrawingOrderCallback(ChildDrawingCallback(layoutManager))
+                featured_video_recyclerView . layoutManager = layoutManager
+                featured_video_recyclerView.itemAnimator = DefaultItemAnimator()
+                featured_video_recyclerView . adapter = adapter
+                featured_video_recyclerView.setChildDrawingOrderCallback(ChildDrawingCallback(layoutManager))
+    }
+
+    override fun onVideoListReceived(list: TopPromotedItemsList) {
+        videoList = list
+    }
+
+    override fun onVideoReceived(item: VideoItem) {
+    }
+
+    override fun onErrorReceived(errorHandler: ErrorHandler) {
     }
 }
